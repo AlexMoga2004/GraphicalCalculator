@@ -7,10 +7,12 @@ import java.util.*;
 import java.util.List;
 
 public class Window extends JPanel implements ActionListener {
+    //declare variables
     public static Map<String, Vertex> vertices = new HashMap<String, Vertex>();
     public static List<String> vertexNames = new ArrayList<>();
     public static Timer timer;
 
+    //create a vertex
     public void createVertex(int xpos, int ypos, String name) {
         Vertex vertex = new Vertex(xpos, ypos, name);
         if (!vertices.containsKey(name)) {
@@ -20,17 +22,20 @@ public class Window extends JPanel implements ActionListener {
         }
     }
 
+    //create a window panel
     public Window() {
         requestFocus();
         setLayout(new BorderLayout());
         timer = new Timer(100, this);
     }
 
+    //join vertices
     public void joinVertices(String vertex1, String vertex2, int weight) {
         vertices.get(vertex1).addConnection(vertex2, weight);
         vertices.get(vertex2).addConnection(vertex1, weight);
     }
 
+    //draw the vertices and arcs
     @Override
     protected void paintComponent(Graphics g) {
         this.setBackground(Color.decode(Main.background));

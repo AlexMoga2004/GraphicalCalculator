@@ -1,11 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.FileInputStream;
+import java.sql.*;
 import java.util.Properties;
 import java.util.Scanner;
 
 public class Main extends JFrame {
 
+    //declare variables
     public static String version;
     public static int resX;
     public static int resY;
@@ -14,7 +16,7 @@ public class Main extends JFrame {
     public static String background, vertexColor, textColor;
 
     public Main(){
-        //Fetch initial variables
+        //Fetch initial variables from ini file
         try {
             Properties properties = new Properties();
             properties.load(new FileInputStream("properties.ini"));
@@ -32,6 +34,8 @@ public class Main extends JFrame {
             System.out.println("Failed to load variables!!! ");
             System.out.println(e);
         }
+
+        //create the main window
         setTitle("Graphical calculator");
         Dimension dimension = new Dimension(resX, resY);
         setPreferredSize(dimension);
@@ -42,7 +46,8 @@ public class Main extends JFrame {
         pack();
     }
 
-    public static void main(String[] args){
+    //This is executed when the user logs in
+    public static void startProgram(){
         Main main = new Main();
         window.createVertex(100,300,"a");
         window.createVertex(400,500,"b");
@@ -59,6 +64,11 @@ public class Main extends JFrame {
         window.joinVertices("d","f",160);
         window.joinVertices("d","b",40);
         window.joinVertices("b","f",200);
+    }
 
+
+
+    public static void main(String[] args) throws Exception{
+        Login login = new Login();
     }
 }
