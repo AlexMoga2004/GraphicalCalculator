@@ -178,11 +178,9 @@ public class Login extends JFrame implements ActionListener{
                     sql = "INSERT INTO User VALUES (";
                     sql += (numberOfUsers + 1) + ", \"";
                     sql += username + "\", \"";
-                    sql += password + "\", ";
-                    sql += -1 + ") ";
+                    sql += password + "\");";
                     System.out.println(sql);
                     statement.execute(sql);
-
                 }
 
             }catch(SQLException e){
