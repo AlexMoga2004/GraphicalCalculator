@@ -16,7 +16,7 @@ public class Main extends JFrame {
     public static String background, vertexColor, textColor;
 
     public Main(){
-        //Fetch initial variables from ini fil
+        //Fetch initial variables from ini file
         try {
             Properties properties = new Properties();
             properties.load(new FileInputStream("properties.ini"));
