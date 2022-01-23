@@ -11,6 +11,7 @@ import java.sql.*;
 
 public class Login extends JFrame implements ActionListener{
 
+    //Declare variables
     public static JTextField userNameField;
     public static JPasswordField passwordField;
     public static String username;

@@ -6,14 +6,17 @@ import java.util.List;
 import java.util.Map;
 
 public class Vertex {
+
+    //Define the variables
     public int xpos, ypos, timeConfirmed, minimumDistance;
     public int[] potentialDistances;
     public boolean confirmed;
-    public Map<String, Integer> connections = new HashMap<String, Integer>();
+    public Map<String, Float> connections = new HashMap<String, Float>();
     public List<String> connectionNames = new ArrayList<>();
     public String name;
     public JLabel label;
 
+    //Create the vertex with given values
     public Vertex(int xpos, int ypos, String name){
         label = new JLabel();
         label.setForeground(Color.decode(Main.textColor));
@@ -27,7 +30,9 @@ public class Vertex {
 
     public int getXpos(){ return xpos; }
     public int getYpos(){ return ypos; }
-    public void addConnection(String vertex, int weight){
+
+    //Add a connection between 2 vertices.
+    public void addConnection(String vertex, float weight){
         if(connections.containsKey(vertex)) {
             if(connections.get(vertex) > weight){
                 connections.replace(vertex, weight);

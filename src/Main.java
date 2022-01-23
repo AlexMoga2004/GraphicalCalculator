@@ -43,6 +43,7 @@ public class Main extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
         add(window);
+        window.requestFocus();
         pack();
     }
 
@@ -55,6 +56,7 @@ public class Main extends JFrame {
         window.createVertex(550,300,"d");
         window.createVertex(1000,300,"e");
         window.createVertex(1000,600,"f");
+        window.createVertex(2600, 2600, " ");
         window.joinVertices("a","b",70);
         window.joinVertices("a","d",120);
         window.joinVertices("d","c",40);
