@@ -8,8 +8,9 @@ import java.util.Map;
 public class Vertex {
 
     //Define the variables
-    public int xpos, ypos, timeConfirmed, minimumDistance;
-    public int[] potentialDistances;
+    public int xpos, ypos, timeConfirmed;
+    public float minimumDistance;
+    public List<Float> potentialDistances = new ArrayList<>();
     public boolean confirmed;
     public Map<String, Float> connections = new HashMap<String, Float>();
     public List<String> connectionNames = new ArrayList<>();

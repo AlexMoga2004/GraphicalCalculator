@@ -5,6 +5,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.util.Objects;
 
 public class WeightWindow extends JFrame implements ActionListener{
 
@@ -58,7 +59,7 @@ public class WeightWindow extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         String name = nameButton.getText();
         //Check if the enter key is pressed
-        if(e.getActionCommand() == "enter"){
+        if(Objects.equals(e.getActionCommand(), "enter")){
             String weightString = nameButton.getText();
             try{
                 float weight = Float.parseFloat(weightString);

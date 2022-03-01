@@ -73,7 +73,7 @@ public class Window extends JPanel implements ActionListener, MouseListener , Ke
         g.setColor(Color.decode(Main.vertexColor));
         for (String vertexName : vertexNames) {
             //make sure highlighted vertices show up as gold
-            if(vertexName == highlightedVertex){
+            if(Objects.equals(vertexName, highlightedVertex)){
                 g.setColor(Color.decode("#FFFF00"));
             }
             else{
@@ -112,22 +112,74 @@ public class Window extends JPanel implements ActionListener, MouseListener , Ke
 
     //function to perform dijkstra's
 
-    public List<String> dijkstrasShortestPath(String startingVertex, String finalVertex){
+    public List<String> dijkstrasShortestPath(String startingVertex, String finalVertex, Boolean stepByStep){
         List<String> shortestPath = new ArrayList<>();
         int timeConfirmed = 1;
-        for(int step = 1; step <= 7; step++)
+        String currentVertex = startingVertex;
+        vertices.get(currentVertex).potentialDistances.add(0.0f);
+        List<String> unvisitedVertices = new ArrayList<>();
+        unvisitedVertices.addAll(vertexNames);
+        unvisitedVertices.remove(" ");
+        List<String> workingVertices = new ArrayList<>();
+        workingVertices.add(startingVertex);
+
+        for(int step = 1; step <= 3; step++)
         {
             if(step == 1){
-                //Mark the first vertex as confirmed
-                vertices.get(startingVertex).confirmed = true;
-                vertices.get(startingVertex).timeConfirmed = timeConfirmed;
-                vertices.get(startingVertex).minimumDistance = 0;
+                //mark the current vertex as visited, and fill in the appropriate values.
+                workingVertices.remove(currentVertex);
+                vertices.get(currentVertex).confirmed = true;
+                vertices.get(currentVertex).timeConfirmed = timeConfirmed;
+                System.out.println("confirmed" + currentVertex);
+                vertices.get(currentVertex).minimumDistance = getSmallest(vertices.get(currentVertex).potentialDistances, vertices.get(currentVertex).potentialDistances.size());
                 timeConfirmed ++;
+                unvisitedVertices.remove(currentVertex);
+                workingVertices.remove(currentVertex);
+
             }
             else if(step == 2){
+                //Fill in the potential distances for all connected vertices (excluding those who have already been visited)
+                for(int j = 0; j < vertices.get(currentVertex).connectionNames.size(); j++){
+                    if(!vertices.get(vertices.get(currentVertex).connectionNames.get(j)).confirmed){
+                        vertices.get(vertices.get(currentVertex).connectionNames.get(j)).potentialDistances.add(vertices.get(currentVertex).connections.get(vertices.get(currentVertex).connectionNames.get(j)));
+                        System.out.println(vertices.get(vertices.get(currentVertex).connectionNames.get(j)).potentialDistances);
+                        if(!workingVertices.contains(vertices.get(currentVertex).connectionNames.get(j))) {
+                            workingVertices.add(vertices.get(currentVertex).connectionNames.get(j));
+                        }
+                        else{
+                            workingVertices.remove(vertices.get(currentVertex).connectionNames.get(j));
+                        }
+                    }
+                }
+            }
+            else if(step == 3){
+                //Change the current vertex to the vertex with the least potential distance, or terminate once completed.
+                if(!(unvisitedVertices.size() == 0) || vertices.get(finalVertex).confirmed){
+                    float smallestValue = 10000000.0f;
+                    String smallestVertex = "";
+
+                    for(int k = 0; k <= workingVertices.size() - 1; k++){
+                        if(getSmallest(vertices.get(workingVertices.get(k)).potentialDistances, vertices.get(workingVertices.get(k)).potentialDistances.size()) < smallestValue){
+                            smallestValue = getSmallest(vertices.get(workingVertices.get(k)).potentialDistances, vertices.get(workingVertices.get(k)).potentialDistances.size());
+                            smallestVertex = workingVertices.get(k);
+                        }
+                        System.out.println(smallestVertex);
+                        System.out.println(smallestValue);
+                        currentVertex = smallestVertex;
+                        workingVertices.remove(currentVertex);
+                        step = 0;
+
+                    }
+                }
+                else{
+                    System.out.println("finished");
+                    break;
+                }
 
             }
         }
+        invalidate();
+        repaint();
         return shortestPath;
     }
 
@@ -209,6 +261,23 @@ public class Window extends JPanel implements ActionListener, MouseListener , Ke
         }
     }
 
+    public static float getSmallest(List<Float> a, int total){
+        float temp;
+        for (int i = 0; i < total; i++)
+        {
+            for (int j = i + 1; j < total; j++)
+            {
+                if (a.get(i) > a.get(j))
+                {
+                    temp = a.get(i);
+                    a.set(i, a.get(j));
+                    a.set(j, temp);
+                }
+            }
+        }
+        return a.get(0);
+    }
+
     @Override
     public void mousePressed(MouseEvent e) {
 
@@ -252,6 +321,10 @@ public class Window extends JPanel implements ActionListener, MouseListener , Ke
         else if(e.getKeyCode() ==67){
             mode = "connect";
             setCursor(new Cursor(Cursor.MOVE_CURSOR));
+        }
+        //if the user presses v
+        else if(e.getKeyCode() == 86){
+            new DijkstrasWindow();
         }
 
     }
